@@ -18,6 +18,8 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
+from util import Stack
+from util import Queue
 
 class SearchProblem:
     """
@@ -87,31 +89,52 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    from util import Stack
-    fringe = Stack()                # Fringe to manage which states to expand
-    fringe.push(problem.getStartState())
-    visited = []                    # List to check whether state has already been visited
-    path=[]                         # Final direction list
-    pathToCurrent=Stack()           # Stack to maintaing path from start to a state
-    currState = fringe.pop()
-    while not problem.isGoalState(currState):
-        if currState not in visited:
-            visited.append(currState)
-            successors = problem.getSuccessors(currState)
+    
+    
+    status = Stack()                # We plan to use status to manage which states will expand next
+    status.push(problem.getStartState())  # then store the initiate state to this stack
+    currNode = status.pop()        # Keep the end node of the status stack out and then as the current state(node)
+    
+    isVisited = []                    # This is a List where state has already been visited
+    goalPath=[]                         # Final direction list
+    currentPath=Stack()           # This stack is for storing current path which is already visited
+    
+    while not problem.isGoalState(currNode):
+        if currNode not in isVisited:
+            isVisited.append(currNode)
+            successors = problem.getSuccessors(currNode)
             for child,direction,cost in successors:
-                fringe.push(child)
-                tempPath = path + [direction]
-                pathToCurrent.push(tempPath)
-        currState = fringe.pop()
-        path = pathToCurrent.pop()
-    return path
-    
-    
+
+                tempPath = goalPath + [direction]
+                currentPath.push(tempPath)
+                status.push(child)              #This is a really important step between bfs and dfs
+                
+        currNode = status.pop()
+        goalPath = currentPath.pop()
+    return goalPath
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+    
+    expand = Queue()                 #We plan to use exapnd to manage which states will expand next and correspond path
+    action = []
+    startNode = problem.getStartState()
+    expand.push((startNode, action))
+    isVisited = []
+    while not expand.isEmpty():
+        currNode, action = expand.pop()
+        if not currNode in isVisited:
+            isVisited.append(currNode)
+            if problem.isGoalState(currNode):
+                return action
+            for child, direction, cost in problem.getSuccessors(currNode):
+                newAction = action + [direction]
+                expand.push((child, newAction))
+
+    return []
+    
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
