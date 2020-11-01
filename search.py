@@ -91,13 +91,13 @@ def depthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
     
     
-    status = Stack()                # We plan to use status to manage which states will expand next
+    status = util.Stack()                # We plan to use status to manage which states will expand next
     status.push(problem.getStartState())  # then store the initiate state to this stack
     currNode = status.pop()        # Keep the end node of the status stack out and then as the current state(node)
     
     isVisited = []                    # This is a List where state has already been visited
     goalPath=[]                         # Final direction list
-    currentPath=Stack()           # This stack is for storing current path which is already visited
+    currentPath = util.Stack()           # This stack is for storing current path which is already visited
     
     while not problem.isGoalState(currNode):
         if currNode not in isVisited:
@@ -118,7 +118,7 @@ def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
     
-    expand = Queue()                 #We plan to use exapnd to manage which states will expand next and correspond path
+    expand = util.Queue()                 #We plan to use exapnd to manage which states will expand next and correspond path
     action = []
     startNode = problem.getStartState()
     expand.push((startNode, action))
