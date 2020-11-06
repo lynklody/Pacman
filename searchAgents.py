@@ -280,7 +280,7 @@ class CornersProblem(search.SearchProblem):
         self.walls = startingGameState.getWalls()
         self.startingPosition = startingGameState.getPacmanPosition()
         top, right = self.walls.height-2, self.walls.width-2
-        self.corners = ((1,1), (1,top), (right, 1), (right, top))
+        self.corners = ((1,1), (1,top), (right, 1), (right, top))  #(1,1)is bottom-left corner
         for corner in self.corners:
             if not startingGameState.hasFood(*corner):
                 print 'Warning: no food in corner ' + str(corner)
@@ -289,12 +289,23 @@ class CornersProblem(search.SearchProblem):
         # in initializing the problem
         "*** YOUR CODE HERE ***"
 
+        self.problem = PositionSearchProblem(startingGameState)
+
     def getStartState(self):
         """
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
         "*** YOUR CODE HERE ***"
+
+        """
+        State: 
+            1. the x,y coordinate position of the Pacman at the start of the game
+            2. the coordinates for all corners
+        """
+        startPos = self.problem.getStartState()
+        return [startPos, self.corners]
+
         util.raiseNotDefined()
 
     def isGoalState(self, state):
