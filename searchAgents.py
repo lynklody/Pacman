@@ -289,10 +289,8 @@ class CornersProblem(search.SearchProblem):
         # in initializing the problem
         "*** YOUR CODE HERE ***"
 
-        self.problem = PositionSearchProblem(startingGameState)
-        # visitedCorners[] order: bottom-left, top-left, bottom-right, top-right
-        # as defined in self.corners
-        self.visitedCorners = [False, False, False, False]
+        self.startPos = startingGameState.getPacmanPosition()
+        # self.visitedCorners = []
 
     def getStartState(self):
         """
@@ -304,10 +302,11 @@ class CornersProblem(search.SearchProblem):
         """
         State: 
             1. the x,y coordinate position of the Pacman at the start of the game
-            2. the coordinates for all corners
+            2. the coordinates of visited corners
         """
-        startPos = self.problem.getStartState()
-        return [startPos, self.corners]
+        
+        # return [self.startPos, self.visitedCorners]
+        return [self.startPos, []]
 
         util.raiseNotDefined()
 
@@ -316,12 +315,9 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        test = True
-        for visited in self.visitedCorners:
-            test = test & visited
-            if not test:
-                return False
-        return True
+
+        return len(state[1]) == len(self.corners)
+
         util.raiseNotDefined()
 
     def getSuccessors(self, state):
@@ -345,8 +341,33 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
+            # reference: https://github.com/anubhav914/pacman/blob/master/search/searchAgents.py 
+            
+            x, y = state[0]
+            visitedCorners = state[1]
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+
+            # if hit a wall -> stop
+            # state/nextState composition @ getStartState()
+            if not self.walls[nextx][nexty]:
+                nextState = [(nextx, nexty), list(visitedCorners)]    
+                """
+                    Note for line 354:
+                        Was originally implementing 'visitedCorners' as a global variable. 
+                        So visitedCorners were initialized with [], instead of list().
+                        As pointed out in here(https://stackoverflow.com/questions/30216000/why-is-faster-than-list),
+                        list() creates an list object whereas [] only generates a literal display of the content in a list.
+                        Since we are manipulating the content directly in list 'visitedCorners' here, 
+                        list() is the ideal way to get the job done.
+                        Aditional reference for this line of code: https://github.com/R-Alex95/Project-1-Search-in-Pacman/blob/master/searchAgents.py
+                """         
+                if nextState[0] in self.corners and nextState[0] not in nextState[1]:
+                    nextState[1].append(nextState[0])
+                successors.append([nextState, action, 1])
 
         self._expanded += 1 # DO NOT CHANGE
+        # print visitedCorners
         return successors
 
     def getCostOfActions(self, actions):
