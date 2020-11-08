@@ -401,7 +401,27 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    "Chose the nearest corner then repeat"
+    heuristic = 0
+    curPos = state[0]
+    visCns = state[1][:]
+    unVisCns = list(corners)
+    for i in visCns:
+        unVisCns.remove(i)
+
+    while len(unVisCns) != 0:    
+        minCn = corners[0]
+        minDis = 999999
+        for cn in unVisCns:
+            dis = abs(curPos[0]-cn[0])+abs(curPos[1]-cn[1])
+            if dis < minDis:
+                minDis = dis
+                minCn = cn
+        heuristic += minDis
+        curPos = minCn
+        unVisCns.remove(minCn)
+
+    return heuristic
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
