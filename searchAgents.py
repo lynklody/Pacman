@@ -514,8 +514,46 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+        "*** YOUR CODE HERE ***"
+    heuristic = 0
+    curPos = position
+    unVisCns = foodGrid.asList()
+
+    while len(unVisCns) != 0:    
+        minCn = unVisCns[0]
+        minDis = 999999
+        for cn in unVisCns:
+            dis = 0
+            testPosx = curPos[0]
+            testPosy = curPos[1]
+
+            q = util.Queue()                
+            q.push((testPosx, testPosy, dis))
+            isVisited = []
+            while not q.isEmpty():
+                testPosx, testPosy, curDis = q.pop()
+                if not (testPosx, testPosy) in isVisited:
+                    isVisited.append((testPosx, testPosy))
+                    if testPosx == cn[0] and testPosy == cn[1]:
+                        dis = curDis
+                        break
+                    successors = []
+                    for direction in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
+                        x = testPosx
+                        y = testPosy
+                        dx, dy = Actions.directionToVector(direction)
+                        nextx, nexty = int(x + dx), int(y + dy)
+                        if not problem.walls[nextx][nexty]:
+                            successors.append((nextx, nexty))
+                    for nx, ny in successors:
+                        q.push((nx, ny, curDis+1))
+            if dis < minDis:
+                minDis = dis
+                minCn = cn
+        heuristic = minDis
+        unVisCns.remove(minCn)
+
+    return heuristic
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
