@@ -514,7 +514,7 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-        "*** YOUR CODE HERE ***"
+    "*** YOUR CODE HERE ***"
     heuristic = 0
     curPos = position
     unVisCns = foodGrid.asList()
