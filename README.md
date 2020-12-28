@@ -1,5 +1,7 @@
 # Pacman - An Automated Search Project
 
+##### Python ver 2.7
+
 The Pacman agent will find paths through his maze world, both to reach a particular location and to collect food efficiently. General search algorithms are applied to each of the Pacman scenarios.<br/>
 
 ## Code Template Source:
@@ -10,15 +12,14 @@ Zhenyu Yang<br/>
 Hui Su<br/>
 Wendy Liu<br/>
 
-
 ## Usage
 <pre>
-    USAGE: python pacman.py <options>
-    EXAMPLES: 
-        (1) `python pacman.py`
+USAGE: python pacman.py <options>
+EXAMPLES: 
+    (1) python pacman.py
          - starts an interactive game <br/>
-        (2) `python pacman.py --layout smallClassic --zoom 2`
-        OR  `python pacman.py -l smallClassic -z 2`
+    (2) python pacman.py --layout smallClassic --zoom 2
+    OR  python pacman.py -l smallClassic -z 2
         - starts an interactive game on a smaller board, zoomed in
 
 Options:
@@ -52,10 +53,68 @@ Options:
                         How many episodes are training (suppresses output)
                         [Default: 0]
   --frameTime=FRAMETIME
-                        Time to delay between frames; <0 means keyboard
+                        Time to delay between frames; 
+                        <0 means keyboard
                         [Default: 0.1]
   -c, --catchExceptions
                         Turns on exception handling and timeouts during games
   --timeout=TIMEOUT     Maximum length of time an agent can spend computing in
                         a single game [Default: 30]
 </pre>
+
+<br/>
+Hint: If Pacman moves too slowly for you, try the option --frameTime 0.
+
+<br/><br/>
+
+## Tasks
+### Finding a Fixed Food Dot using Depth First Search
+
+&nbsp; `python pacman.py -l tinyMaze -p SearchAgent -a fn=tinyMazeSearch` <br/>
+![dfs](./gif/dfs.gif)
+&nbsp; `python pacman.py -l tinyMaze -p SearchAgent` <br/>
+&nbsp; `python pacman.py -l mediumMaze -p SearchAgent` <br/>
+&nbsp; `python pacman.py -l bigMaze -z .5 -p SearchAgent`<br/>
+
+### Breadth First Search
+
+&nbsp; `python pacman.py -l mediumMaze -p SearchAgent -a fn=bfs` <br/>
+&nbsp; `python pacman.py -l bigMaze -p SearchAgent -a fn=bfs -z .5` <br/>
+
+### Varying the Cost Function
+&nbsp; `python pacman.py -l mediumMaze -p SearchAgent -a fn=ucs` <br/>
+&nbsp; `python pacman.py -l mediumDottedMaze -p StayEastSearchAgent` <br/>
+&nbsp; `python pacman.py -l mediumScaryMaze -p StayWestSearchAgent` <br/>
+
+![bfs+ucs](./gif/bfs.gif)
+<br/>
+The red path represents the search nodes expanded by the current algorithm.<br/>
+
+### A* search
+
+&nbsp; `python pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic` <br/>
+
+A* search is more optimized as a solution for this problem because 
+![astar](./gif/astar.gif)
+
+### Finding All the Corners
+
+&nbsp; `python pacman.py -l tinyCorners -p SearchAgent -a fn=bfs,prob=CornersProblem`<br/>
+This command help Pacman to traverse all the corners in the current map (even without the presence of the food dots).
+![corners](./gif/corners.gif)
+
+&nbsp; `python pacman.py -l mediumCorners -p SearchAgent -a fn=bfs,prob=CornersProblem`<br/>
+
+### Corners Problem: Heuristic
+
+&nbsp; `python pacman.py -l mediumCorners -p AStarCornersAgent -z 0.5`
+![heuristicCorners](./gif/largercorners.gif)
+&nbsp; `-p SearchAgent -a fn=aStarSearch,prob=CornersProblem,heuristic=cornersHeuristic`
+
+### Eating All The Dots
+
+&nbsp; `python pacman.py -l trickySearch -p AStarFoodSearchAgent`
+
+### Suboptimal Search
+
+&nbsp; `python pacman.py -l bigSearch -p ClosestDotSearchAgent -z .5`
