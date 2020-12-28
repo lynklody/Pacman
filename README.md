@@ -71,7 +71,12 @@ Hint: If Pacman moves too slowly for you, try the option --frameTime 0.
 ### Finding a Fixed Food Dot using Depth First Search
 
 &nbsp; `python pacman.py -l tinyMaze -p SearchAgent -a fn=tinyMazeSearch` <br/>
+
+<br/>
+
 ![dfs](./gif/dfs.gif)
+<br/>
+
 &nbsp; `python pacman.py -l tinyMaze -p SearchAgent` <br/>
 &nbsp; `python pacman.py -l mediumMaze -p SearchAgent` <br/>
 &nbsp; `python pacman.py -l bigMaze -z .5 -p SearchAgent`<br/>
@@ -86,6 +91,8 @@ Hint: If Pacman moves too slowly for you, try the option --frameTime 0.
 &nbsp; `python pacman.py -l mediumDottedMaze -p StayEastSearchAgent` <br/>
 &nbsp; `python pacman.py -l mediumScaryMaze -p StayWestSearchAgent` <br/>
 
+<br/>
+
 ![bfs+ucs](./gif/bfs.gif)
 <br/>
 The red path represents the search nodes expanded by the current algorithm.<br/>
@@ -95,26 +102,36 @@ The red path represents the search nodes expanded by the current algorithm.<br/>
 &nbsp; `python pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic` <br/>
 
 A* search is more optimized as a solution for this problem because 
+<br/>
+
 ![astar](./gif/astar.gif)
+<br/>
 
 ### Finding All the Corners
 
 &nbsp; `python pacman.py -l tinyCorners -p SearchAgent -a fn=bfs,prob=CornersProblem`<br/>
 This command help Pacman to traverse all the corners in the current map (even without the presence of the food dots).
+<br/>
+
 ![corners](./gif/corners.gif)
+<br/>
 
 &nbsp; `python pacman.py -l mediumCorners -p SearchAgent -a fn=bfs,prob=CornersProblem`<br/>
 
 ### Corners Problem: Heuristic
 
 &nbsp; `python pacman.py -l mediumCorners -p AStarCornersAgent -z 0.5`
+<br/>
+
 ![heuristicCorners](./gif/largercorners.gif)
-&nbsp; `-p SearchAgent -a fn=aStarSearch,prob=CornersProblem,heuristic=cornersHeuristic`
+<br/>
+
+&nbsp; `python pacman.py -p SearchAgent -a fn=aStarSearch,prob=CornersProblem,heuristic=cornersHeuristic`<br/>
 
 ### Eating All The Dots
 
-&nbsp; `python pacman.py -l trickySearch -p AStarFoodSearchAgent`
+&nbsp; `python pacman.py -l trickySearch -p AStarFoodSearchAgent`<br/>
 
 ### Suboptimal Search
 
-&nbsp; `python pacman.py -l bigSearch -p ClosestDotSearchAgent -z .5`
+&nbsp; `python pacman.py -l bigSearch -p ClosestDotSearchAgent -z .5`<br/>
